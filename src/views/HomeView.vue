@@ -20,7 +20,7 @@
                   <div class="bg-white d-flex w-100 position-relative align-items-center px-3 bg-transparent">
                     <i class="fa-solid fa-magnifying-glass position-absolute"></i>
                     <input type="search" placeholder="Search undergradute degree program..."
-                      class="form-control border-0 rounded-0 px-4 search w-100">
+                      class="form-control border-0 rounded-0 px-4 search w-100">    
                   </div>
                 </div>
               </div>
@@ -58,10 +58,10 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>  
             </div>
           </div>
-        </div>
+        </div> 
       </div>
     </section>
 
@@ -205,31 +205,9 @@
           </p>
         </div>
         <div class="row g-5">
-          <div class="col-lg-3" v-for="card in event" :key="card.id">
-             <div class="card my-shadow border-0 rounded-4">
-                  <img :src="card.img" alt="" class="card-img-top rounded-4 card-img-height" />
-                  <div class="card-body">
-                    <h6 class="card-title mb-3">
-                       {{ card.title }}
-                    </h6>
-                    <div class="d-flex justify-content-end align-items-end">
-                      <span>
-                        <p class="card-text mb-0">
-                          <i class="fa-light fa-calendar-days me-1 color-primary"></i>
-                         {{card.date}}
-                        </p>
-                        <p class="card-text">
-                          <i class="fa-light fa-clock me-1 color-primary"></i> 
-                          {{ card.time }}
-                        </p>
-                      </span>
-                      <a href="#" class="color-primary text-decoration-none ms-auto" type="btn" data-bs-toggle="modal"
-                        data-bs-target="#learn-1">
-                        <i class="fa-solid fa-angle-right btn-outline-main rounded-circle px-2 py-1 fs-5"></i> </a>
-                    </div>
-                  </div>
-                </div>
-          </div>
+          <div class="col-lg-12">  
+            <Swiper/> 
+          </div>   
         </div>
       </div>
     </section>
@@ -323,10 +301,11 @@
 </template>
 <script setup>
   import Navbar from '@/components/Navbar.vue';
+  import Swiper from '@/components/layout/Swiper.vue';
   import Hero from '@/components/Hero.vue';
   import Footers from '@/components/Footer.vue';
-  import cardimg1 from "@/assets/img/banner/student day.jpeg"
-  import modalpf from "@/assets/img/avata/avatar-1.jpg"
+  import cardimg1 from "@/assets/img/banner/student day.jpeg";
+  import modalpf from "@/assets/img/avata/avatar-1.jpg";
 
 
   const event = [
