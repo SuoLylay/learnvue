@@ -37,7 +37,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="event.html">Event</a>
+                <a class="nav-link" href="event.html">Eventsss</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="scholarship.html">Scholarship</a>
