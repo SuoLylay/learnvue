@@ -18,7 +18,7 @@
           <div class="offcanvas-body">
             <ul class="navbar-nav m-auto">
               <li class="nav-item">
-                <RouterLink class="nav-link active" to="/">Home</RouterLink>
+                <RouterLink class="nav-link active" to="/home">Home</RouterLink>
               </li>
 
               <li class="nav-item dropdown">
@@ -37,7 +37,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="event.html">Eventsss</a>
+                <a class="nav-link" href="event.html">Event</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="scholarship.html">Scholarship</a>
@@ -69,9 +69,9 @@
               </li>
             </ul>
             <div>
-              <a href="enroll.html" class="btn btn-main btn-outline-light me-2">Enroll Now <i
-                  class="bi bi-person-plus"></i></a>
-              <a href="request.html" class="btn btn-secondary">Request Info</a>
+              <RouterLink to="/enroll" class="btn btn-main btn-outline-light me-2">Enroll Now <i
+                  class="bi bi-person-plus"></i></RouterLink>
+              <RouterLink to="/" class="btn btn-secondary">Login</RouterLink>
             </div>
           </div>
         </div>

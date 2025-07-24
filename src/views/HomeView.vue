@@ -213,6 +213,7 @@
   </section>
 
   <Footers />
+  <Count />
 
 </template>
 <script setup>
@@ -222,6 +223,7 @@ import Hero from '@/components/Hero.vue';
 import Footers from '@/components/Footer.vue';
 import cardimg1 from "@/assets/img/banner/student day.jpeg";
 import modalpf from "@/assets/img/avata/avatar-1.jpg";
+import Count from '@/components/layout/Count.vue';
 
 
 const event = [
