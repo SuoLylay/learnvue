@@ -13,7 +13,7 @@
               {{ item.text }}
             </p>
             <div class="animate__animated animate__fadeIn">
-              <a href="#" class="btn btn-main">View all programs <i class="bi bi-person-plus"></i></a>
+              <a href="#" class="btn btn-main">Enroll Now <i class="bi bi-person-plus"></i></a>
               <a href="#" class="btn btn-secondary ms-3">Learn more <i class="bi bi-chevron-right"></i></a>
             </div>
           </div>

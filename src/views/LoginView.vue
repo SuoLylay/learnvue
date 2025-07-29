@@ -15,10 +15,10 @@
                 <div class="mb-3">
                   <div class="input-group position-relative">
                     <i class="bi bi-envelope text-dark input-group-text fs-5"></i>
-                    <input v-model="email" type="email" placeholder="Enter your email" class="py-2 form-control"
-                      :class="{ 'input-error': errors.email }" />
-                    <div v-if="errors.email" class="text-danger position-absolute top-100" style="font-size: 13px;">{{
-                      errors.email }}</div>
+                    <input v-model="emailInput" type="text" placeholder="e.g@gmail.com" class="py-2 form-control"
+                      :class="{ 'input-error': errors.emailInput }" />
+                    <div v-if="errors.emailInput" class="text-danger position-absolute top-100"
+                      style="font-size: 13px;">{{ errors.emailInput }}</div>
                   </div>
                 </div>
               </div>
@@ -44,15 +44,15 @@
               <div class="col-lg-12">
                 <div class="d-flex justify-content-between">
                   <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="check">
+                    <input v-model="rememberMe" type="checkbox" class="form-check-input" id="check" />
                     <label for="check" class="form-check-label">Remember me</label>
                   </div>
-                  <a href="">forgot password ?</a>
+                  <a href="#">Forgot password?</a>
                 </div>
               </div>
 
               <div class="col-lg-12">
-                <button type="submit" class="btn btn-main w-100 mt-3">Login</button>
+                <button @click.prevent="handleLogin" class="btn btn-main w-100 mt-3">Login</button>
               </div>
 
               <div class="col-lg-12">
@@ -81,26 +81,47 @@
 
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const loginError = ref('')
-const errors = ref({}) // holds field errors
+const errors = ref({})
 const router = useRouter()
 
+const emailInput = ref('')
+const rememberMe = ref(false)
+
+//this for auto insert @gmail.com for user
+const email = computed(() => {
+  const value = emailInput.value.trim() //auto add @gmail.com
+  return value.includes('@') ? value : `${value}@gmail.com` //give user choose input full mail format or only name of mail can the same login
+})
+
+// remembered email and pw
+onMounted(() => {
+  const savedPassword = localStorage.getItem('rememberedPassword') //delete it if don't want remeber pw
+  const savedEmail = localStorage.getItem('rememberedEmail') 
+  if (savedEmail && savedPassword) { //delete && savedPassword if don't want to save pw
+    emailInput.value = savedEmail
+    password.value = savedPassword 
+    rememberMe.value = true
+  }
+})
+
 const handleLogin = () => {
-  // Clear errors first
   loginError.value = ''
   errors.value = {}
 
   // Email validation
-  if (!email.value) {
-    errors.value.email = 'Email is required'
-  } else if (!/\S+@\S+\.\S+/.test(email.value)) {
-    errors.value.email = 'Invalid email format'
+  if (!emailInput.value) {
+    errors.value.emailInput = 'Email is required'
+  } else if (
+    !/^[a-zA-Z0-9._%+-]+$/.test(emailInput.value) &&
+    !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailInput.value)
+  ) {
+    errors.value.emailInput = 'Invalid email format'
   }
 
   // Password validation
@@ -110,29 +131,42 @@ const handleLogin = () => {
     errors.value.password = 'Password must be at least 6 characters'
   }
 
-  // If my validation errors, stop here
+  // when it error stop here 
   if (Object.keys(errors.value).length > 0) return
 
-  //  login check
+  // login check =======================
   const users = JSON.parse(localStorage.getItem('users') || '[]')
   const match = users.find(u => u.email === email.value && u.password === password.value)
+
   if (match) {
     localStorage.setItem('isLoggedIn', 'true')
+    localStorage.setItem('user', JSON.stringify({
+      email: match.email,
+      username: match.username,
+      password: match.password
+    }))
+
+    // Handle of remember me
+    if (rememberMe.value) {
+      localStorage.setItem('rememberedEmail', emailInput.value)
+      localStorage.setItem('rememberedPassword', password.value) //delete it if don't want remeber pw
+     } else {
+      localStorage.removeItem('rememberedEmail')
+      localStorage.removeItem('rememberedPassword') //delete it if don't want remeber pw
+    }
+    // if everything true go to home 
     router.push('/home')
   } else {
     loginError.value = 'Incorrect email or password'
     setTimeout(() => {
       loginError.value = ''
-    }, 3000)
+    }, 3000) //else show error message and auto gone 3s
   }
 }
-
-// hide and show pw 
 const togglePassword = () => {
   showPassword.value = !showPassword.value
 }
 </script>
-
 
 
 <style scoped>
