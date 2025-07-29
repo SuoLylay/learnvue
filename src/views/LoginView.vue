@@ -47,7 +47,7 @@
                     <input v-model="rememberMe" type="checkbox" class="form-check-input" id="check" />
                     <label for="check" class="form-check-label">Remember me</label>
                   </div>
-                  <a href="#">Forgot password?</a>
+                  <RouterLink to="/forget">Forgot password?</RouterLink>
                 </div>
               </div>
 
@@ -64,11 +64,18 @@
 
               <div class="col-lg-12">
                 <div class="d-flex justify-content-center gap-3 my-3">
-                  <a href=""><i class="bi bi-facebook fs-4 bg-light px-5 py-3"></i></a>
-                  <a href=""><i class="bi bi-google fs-4 bg-light px-5 py-3"></i></a>
-                  <a href=""><i class="bi bi-telegram fs-4 bg-light px-5 py-3"></i></a>
+                  <a href="#" @click.prevent="showMessage('Facebook login is not available yet')">
+                    <i class="bi bi-facebook fs-4 bg-light px-5 py-3"></i>
+                  </a>
+                  <a href="#" @click.prevent="showMessage('Google login is not available yet')">
+                    <i class="bi bi-google fs-4 bg-light px-5 py-3"></i>
+                  </a>
+                  <a href="#" @click.prevent="showMessage('Telegram login is not available yet')">
+                    <i class="bi bi-telegram fs-4 bg-light px-5 py-3"></i>
+                  </a>
                 </div>
               </div>
+
 
               <p class="text-center">Don't have an account? <router-link to="/signup"> Sign Up</router-link></p>
             </form>
@@ -81,8 +88,12 @@
 
 
 <script setup>
+const showMessage = (msg) => {
+  alert(msg)
+}
+
 import { computed, ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 
 const password = ref('')
 const showPassword = ref(false)
@@ -102,10 +113,10 @@ const email = computed(() => {
 // remembered email and pw
 onMounted(() => {
   const savedPassword = localStorage.getItem('rememberedPassword') //delete it if don't want remeber pw
-  const savedEmail = localStorage.getItem('rememberedEmail') 
+  const savedEmail = localStorage.getItem('rememberedEmail')
   if (savedEmail && savedPassword) { //delete && savedPassword if don't want to save pw
     emailInput.value = savedEmail
-    password.value = savedPassword 
+    password.value = savedPassword
     rememberMe.value = true
   }
 })
@@ -150,7 +161,7 @@ const handleLogin = () => {
     if (rememberMe.value) {
       localStorage.setItem('rememberedEmail', emailInput.value)
       localStorage.setItem('rememberedPassword', password.value) //delete it if don't want remeber pw
-     } else {
+    } else {
       localStorage.removeItem('rememberedEmail')
       localStorage.removeItem('rememberedPassword') //delete it if don't want remeber pw
     }
