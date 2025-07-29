@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     <div class="row min-vh-100 justify-content-center align-items-center">
@@ -71,7 +70,7 @@
                 </div>
               </div>
 
-              <p class="text-center">Don't have an account? <a href="">Sign up</a></p>
+              <p class="text-center">Don't have an account? <router-link to="/signup"> Sign Up</router-link></p>
             </form>
           </div>
         </div>
@@ -111,11 +110,13 @@ const handleLogin = () => {
     errors.value.password = 'Password must be at least 6 characters'
   }
 
-  // If validation errors, stop here
+  // If my validation errors, stop here
   if (Object.keys(errors.value).length > 0) return
 
   //  login check
-  if (email.value === 'admin@gmail.com' && password.value === '123456') {
+  const users = JSON.parse(localStorage.getItem('users') || '[]')
+  const match = users.find(u => u.email === email.value && u.password === password.value)
+  if (match) {
     localStorage.setItem('isLoggedIn', 'true')
     router.push('/home')
   } else {
@@ -138,11 +139,6 @@ const togglePassword = () => {
 .form-control:focus {
   box-shadow: none;
 }
-
-/* .input-group {
-  box-shadow: 0 0 1px 1px rgb(220, 220, 220);
-  border-radius: 5px;
-} */
 
 .icon-eye {
   right: 30px;
