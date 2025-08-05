@@ -70,20 +70,28 @@
             </ul>
             <div>
               <div v-if="isLoggedIn" class="dropdown">
-                <button class="btn btn-outline-light dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown">
-                   <div class="d-flex align-items-center justify-content-center rounded-circle me-2 bg-dark text-light" style="width: 30px!important; height: 30px!important;">
-                    {{ user?.username?.substring(0, 2).toUpperCase() }}
+                <button class="btn btn-outline-light dropdown-toggle d-flex align-items-center" type="button"
+                  data-bs-toggle="dropdown">
+
+                  <div class="me-2">
+                    <img v-if="user.profileImage" :src="user.profileImage" alt="profile" class="rounded-circle"
+                      style="width: 30px; height: 30px; object-fit: cover;" />
+                    <div v-else
+                      class="d-flex align-items-center justify-content-center rounded-circle bg-dark text-light"
+                      style="width: 30px; height: 30px;">
+                      {{ user?.username?.substring(0, 2).toUpperCase() }}
+                    </div>
                   </div>
-                  {{ user?.username }}
+
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                  <RouterLink class="dropdown-item" to="/profile">Profile</RouterLink>
                   <li><a class="dropdown-item" @click="logout" style="cursor: pointer;">Logout</a></li>
                 </ul>
               </div>
+
               <div v-else>
-                <RouterLink to="/enroll" class="btn btn-main btn-outline-light me-2">Enroll Now <i
-                    class="bi bi-person-plus"></i></RouterLink>
+                <RouterLink to="/enroll" class="btn btn-main btn-outline-light me-2">Enroll Now</RouterLink>
                 <RouterLink to="/" class="btn btn-secondary">Login</RouterLink>
               </div>
 
@@ -99,16 +107,30 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import logo from '@/assets/img/logo.png'
 
-const title = 'Contact'
-const user = ref(null)
+const user = ref({})
 const isLoggedIn = ref(false)
 const router = useRouter()
 
-onMounted(() => {
-  const savedUser = localStorage.getItem('user')
-  if (savedUser) {
-    user.value = JSON.parse(savedUser)
+// Load user from localStorage initially
+const loadUser = () => {
+  const data = JSON.parse(localStorage.getItem('user'))
+  if (data) {
+    user.value = data
     isLoggedIn.value = true
+  } else {
+    user.value = {}
+    isLoggedIn.value = false
+  }
+}
+
+onMounted(() => {
+  loadUser()
+})
+
+// Optional: listen to storage event to detect changes in other tabs/windows
+window.addEventListener('storage', (event) => {
+  if (event.key === 'user') {
+    loadUser()
   }
 })
 
@@ -116,7 +138,7 @@ const logout = () => {
   localStorage.removeItem('user')
   localStorage.removeItem('isLoggedIn')
   router.push('/')
-  
-  // location.reload() it forces full page refresh, but cancels the redirect.
+  location.reload()
 }
 </script>
+
